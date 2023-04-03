@@ -8,7 +8,7 @@ const message = document.querySelector (".message");
 const hiddenButton = document.querySelector (".play-again"); 
 
 let word = "magnolia";
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8; 
 
 const getWord = async function () {
@@ -109,10 +109,10 @@ const updateWordInProgress = function (guessedLetters) {
     checkWin () 
 };
 
-var countRemainingGuesses = function (guess) {
+const countRemainingGuesses = function (guess) {
     const upperWord = word.toUpperCase (); 
     if (!upperWord.includes (guess)) {
-        message.innerText = ` Ooops! The word has no letter ${guess}.`;
+        message.innerText = `Ooops! The word has no letter ${guess}.`;
         remainingGuesses -= 1;
     } else {
         message.innerText = `Good guess! The word has the letter ${guess}.`;
@@ -120,7 +120,8 @@ var countRemainingGuesses = function (guess) {
     };
     
     if (remainingGuesses === 0) {
-        message.innerText = `Game over! The word was <span class="highlight">${word}</span>.`;
+        message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>.`;
+        startOver();
     } else if (remainingGuesses === 1) {
         remainingSpan.innerText = `${remainingGuesses} guess`;
     } else {
@@ -136,7 +137,36 @@ const checkWin = function () {
     if (word.toUpperCase ()=== wordInProgress.innerText){
         message.classList.add ("win");
         message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>.`;
+        
+        startOver (); 
     }
+    
 }; 
+ const startOver = function () {
+     buttonGuess.classList.add("hide"); 
+     remaining.classList.add("hide"); 
+     guessedLettersElement.classList.add("hide"); 
+     hiddenButton.classList.remove("hide"); 
+
+ };
+
+ hiddenButton.addEventListener ("click", function () {
+     message.classList.remove ("win");
+     guessedLetters = []; 
+     remainingGuesses = 8; 
+
+     guessedLettersElement.innerHTML = "";
+     message.innerText = "";
+     remainingSpan.innerText = `${remainingGuesses} guesses`;
+
+     getWord (); 
+
+     buttonGuess.classList.remove("hide"); 
+     remaining.classList.remove("hide"); 
+     guessedLettersElement.classList.remove("hide"); 
+     hiddenButton.classList.add("hide"); 
+
+
+ }); 
 
 
